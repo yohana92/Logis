@@ -1,0 +1,252 @@
+$(function(){
+    $(window).scroll(function(){
+        var sticky = $('.header-container'),
+        scroll = $(window).scrollTop();
+        if (scroll >= 100) sticky.addClass('header-fixed');
+        else sticky.removeClass('header-fixed');
+    });
+    
+    ///***** START SLICK WITH PROGRESSBAR****///
+		  // Slick Slide Counters
+		  var $mainslider = $('.heroslider')
+				$mainslider.on('init', function(event, slick) {
+					$(this).append('<div class="slick-counter"><div class="current">0<span></span></div>/<div class="total">0<span></span></div><div class="slider-progress"><div class="progress"></div></div></div>');
+					$('.current > span').text(slick.currentSlide + 1);
+					$('.total > span').text(slick.slideCount);
+				  })
+			  $mainslider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+				$('.current > span').text(nextSlide + 1);
+			  });
+		  
+		  // Slick Slider Options
+		  $mainslider.slick({
+				draggable: true,
+				arrows: true,
+				dots: true,
+				fade:true,
+				infinite: true,
+				speed: 1000,
+				mobileFirst: true,
+				pauseOnHover: true,
+			  });
+		  
+		  // Slider Progressbar Start Here
+		  var time = 3;
+		  var $bar,
+			$mainslider,
+			isPause,
+			tick,
+			percentTime;
+		
+		  $bar = $('.slider-progress .progress');
+		
+		  function startProgressbar() {
+			resetProgressbar();
+			percentTime = 0;
+			isPause = false;
+			tick = setInterval(interval, 15);
+		  }
+		
+		  function interval() {
+			if (isPause === false) {
+			  percentTime += 1 / (time + 0.1);
+			  $bar.css({
+				width: percentTime + "%"
+			  });
+			  if (percentTime >= 100) {
+				$mainslider.slick('slickNext');
+			  }
+			}
+		  }
+		  function resetProgressbar() {
+			$bar.css({
+			  width: 0 + '%'
+			});
+			clearTimeout(tick);
+		  }
+		  // Reset Progressbar When Slide Change
+		   $mainslider.on('afterChange', function(event, slick, currentSlide) {
+			  startProgressbar();
+		  });
+		  
+		 $('.sliderwrap').on({
+			mouseenter: function() {
+			  isPause = true;
+			},
+			mouseleave: function() {
+			  isPause = false;
+			}
+		  })
+		startProgressbar();
+    
+    var $solutionslider = $('.solution-slider');
+    function solutionsliderFunction() {
+        $solutionslider.slick({
+            infinite: false,
+            speed: 300,
+            slidesToShow: 1,
+            centerMode: true,
+            centerPadding: '60px',
+            autoplaySpeed: 20000,
+            pauseOnHover: true,
+            responsive: [
+                 {
+                  breakpoint: 767,
+                  settings: {
+                    centerMode: false,
+                    centerPadding: '0px',
+                    slidesToShow: 1
+                  }
+                }             
+            ]
+        });
+        $(window).on('resize orientationchange', function() {
+            $solutionslider.find('.slick-prev').click();
+        });
+    }
+    solutionsliderFunction()
+    
+    var $newscarousel = $('.news-carousel');
+    function newscarouselFunction() {
+        $newscarousel.slick({
+            infinite: false,
+            speed: 300,
+            autoplaySpeed: 60000,
+            pauseOnHover: true,
+            slidesToShow: 3,
+            responsive: [
+                 {
+                  breakpoint: 767,
+                  settings: {
+                    centerPadding: '0px',
+                    slidesToShow: 1
+                  }
+                }             
+            ]
+        });
+        $(window).on('resize orientationchange', function() {
+            $newscarousel.find('.slick-prev').click();
+        });
+    }
+    newscarouselFunction();
+    
+    var $missioncarousel = $('.mission-carousel');
+    function missioncarouselFunction() {
+        $missioncarousel.each(function(){
+            $(this).slick({
+                infinite: false,
+                speed: 300,
+                slidesToShow: 2,
+                responsive: [
+                     {
+                      breakpoint: 767,
+                      settings: {
+                        centerPadding: '0px',
+                        slidesToShow: 1
+                      }
+                    }             
+                ]
+            });
+        });
+        $(window).on('resize orientationchange', function() {
+            $missioncarousel.find('.slick-prev').click();
+        });
+    }
+    missioncarouselFunction();
+    
+    var $mediacarousel = $('.media-slider');
+    function mediacarouselFunction() {
+        $mediacarousel.each(function(){
+            $(this).slick({
+                infinite: false,
+                speed: 300,
+                slidesToShow: 1,
+                dots: true,
+                arrows: false
+            });
+        });
+        $(window).on('resize orientationchange', function() {
+            $mediacarousel.find('.slick-prev').click();
+        });
+    }    
+    mediacarouselFunction();
+      
+    var $membercarousel = $('.member-list');
+    function membercarouselFunction() {
+        $membercarousel.each(function(){
+            $(this).slick({
+                infinite: false,
+                speed: 300,
+                centerPadding: '15px',
+                slidesToShow: 4,
+                autoplay: false,
+                responsive: [
+                     {
+                      breakpoint: 767,
+                      settings: {
+                        slidesToShow: 2
+                      }
+                    },
+                    {
+                      breakpoint: 575,
+                      settings: {
+                        centerPadding: '0px',
+                        slidesToShow: 1
+                      }
+                    }
+                ]
+            });
+        });
+        $(window).on('resize orientationchange', function() {
+            $membercarousel.find('.slick-prev').click();
+        });
+    }
+    membercarouselFunction();
+    
+    var $ipaccordionlink = $('#accordion-ip .card-header a');
+    
+    function counterFunction(){
+        $ipaccordionlink.each(function(){
+            var countercontan = $(this).attr('href');
+            var $counter = $(countercontan).find('.counter-num');
+            $(this).on('click', function(){
+                $counter.each(function() {
+                    var $this = $(this),
+                        countTo = $this.attr('data-count');
+                    $({ countNum: $this.text()}).animate({
+                      countNum: countTo
+                    },                                                         
+                    {
+                      duration: 1000,
+                      easing:'linear',
+                      step: function() {
+                        $this.text(Math.floor(this.countNum));
+                      },
+                      complete: function() {
+                        $this.text(this.countNum + '+');
+                      }
+                    });
+                });
+            });
+        });
+    }
+    
+    counterFunction();
+        
+});
+//banner video section
+    var video = document.getElementById("banner-video");
+
+    // Get the button
+    var btn = document.getElementById("play-action");
+
+    // Pause and play the video, and change the button text
+    function videoFuction() {
+        if (video.paused) {
+            video.play();
+            btn.classList.add("pause-icon");
+        } else {
+            video.pause();
+            btn.classList.remove("pause-icon");
+        }
+    }
